@@ -3,21 +3,19 @@
  */
 package org.wnsoft.controller;
 
-import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.wnsoft.domain.Match;
 import org.wnsoft.dto.MatchDto;
 import org.wnsoft.dto.PubMatchDto;
 import org.wnsoft.entity.User;
 import org.wnsoft.service.MatchService;
-import org.wnsoft.utils.WnException;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 @Controller
@@ -53,19 +51,15 @@ public class MatchApi {
     }
 
     @RequestMapping(value = "/user/get.do", method = RequestMethod.GET)
-    public ModelAndView getUserByCode(String code, String state) {
-        User user = matchService.getUser(code);
-        ModelAndView mav = new ModelAndView("oauth");
-        mav.addObject("user", JSON.toJSONString(user));
-        byte[] tmpState = Base64.getDecoder().decode(state);
+    public User getOauthUser() {
+        User user = matchService.getOauthUser();
+        return user;
+    }
 
-        try {
-            mav.addObject("target", new String(tmpState, "utf-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new WnException(e);
-        }
-
-        return mav;
+    @RequestMapping(value = "/user/callback.do", method = RequestMethod.GET)
+    @ResponseBody
+    public void onOauthCallback(String code, String state) {
+        matchService.setOauthCode(code, state);
     }
 
     @RequestMapping(value = "/match/get.do", method = RequestMethod.GET)
@@ -90,5 +84,11 @@ public class MatchApi {
     @ResponseBody
     public void signupMatch(String matchId, String userId) {
         matchService.signupMatch(matchId, userId);
+    }
+
+    @RequestMapping(value = "/match/players.do", method = RequestMethod.GET)
+    @ResponseBody
+    public List<User> getMatchPlayers(String matchId) {
+        return matchService.getMatchPlayers(matchId);
     }
 }

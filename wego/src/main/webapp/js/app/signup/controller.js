@@ -5,7 +5,11 @@ var SignupController = Class.extend({
     init: function () {
         this.signupView = new SignupView();
         this.signupModel = new SignupModel();
-        this.signupView.showUser(this.signupModel.user);
+
+        global.getOauthUser(this, function(controller, result) {
+            controller.signupModel.user = result;
+            controller.signupView.showUser(result);
+        });
 
         this.signupModel.loadMatch(function(result) {
             signupController.signupView.showMatch(result);

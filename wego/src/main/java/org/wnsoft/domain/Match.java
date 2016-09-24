@@ -19,7 +19,7 @@ public class Match implements Serializable {
     private String pitch;         //球场
     private String pitchAddress;  //球场地址
     private String opponent;      //对手
-    private int status = 0;           //0-未开始 1-进行中 2-结束 3-取消
+    private int status = 0;       //0-未开始 1-进行中 2-结束 3-取消
     private int score;
     private int oppScore;         //对手分数
     private List<User> playerList = new ArrayList<>();      //报名队员

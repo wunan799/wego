@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.util.*;
 
 public class MatchService {
+    public static final String REDIRECT_URL = "http://wego.au-syd.mybluemix.net/redirect.jsp?";
     private MatchManager matchManager = new MatchManager();
     private MessageManager messageManager = new MessageManager();
     private TokenManager tokenManager = new TokenManager();
@@ -77,16 +78,16 @@ public class MatchService {
         articles.setTitle(match.getTitle());
         int imageIndex = (new Random().nextInt()) % imageArray.length;
         articles.setThumb_media_id(imageArray[Math.abs(imageIndex)]);
-        String redirectUrl = null;
+        String params = null;
 
         try {
-            redirectUrl = "http://wego.au-syd.mybluemix.net/redirect.jsp?" +
-                    "target=/signup.html&oauth=1&params=" + URLEncoder.encode(
-                            "{\"match\":\"" + matchId + "\"}", "utf-8");
+            params = URLEncoder.encode("{\"match\":\"" + matchId + "\"}", "utf-8");
         } catch (UnsupportedEncodingException e) {
             throw new WnException(e);
         }
 
+        String signupUrl = REDIRECT_URL + "target=/signup.html&params=" + params;
+        String playersUrl = REDIRECT_URL + "target=/players.html&params=" + params;
         String content = "<div class=\"text\"><table cellspacing=\"20\" cellpadding=\"5\">";
         DateFormat df = DateFormat.getDateTimeInstance(DateFormat.LONG
                 , DateFormat.SHORT, Locale.CHINESE);
@@ -107,8 +108,10 @@ public class MatchService {
             content += "<tr><td>比赛备注</td><td>" + match.getContent() + "</td></tr>";
         }
 
-        content += "</table><p><a href=\"" + redirectUrl+ "\" " +
-                "target=\"_self\">比赛报名</a><br></p></div>";
+        content += "</table><p><a href=\"" + signupUrl + "\" " +
+                "target=\"_self\"><h4>比赛报名</h4></a><br></p>" +
+                "<p><a href=\"" + playersUrl + "\" target=\"_self\">" +
+                "<h4>已报名队员</h4></a><br></p></div>";
 
         articles.setContent(content);
         articles.setShow_cover_pic("1");
@@ -117,8 +120,8 @@ public class MatchService {
         messageManager.publish(mpNewsMsg, tokenManager.getToken());
     }
 
-    public User getUser(String code) {
-        return userManager.getUserByCode(code, tokenManager.getToken());
+    public User getOauthUser() {
+        return userManager.getOauthUser(tokenManager.getToken());
     }
 
     public Match getMatch(String matchId) {
@@ -128,5 +131,14 @@ public class MatchService {
     public void signupMatch(String matchId, String userId) {
         Match match = matchManager.getMatchById(matchId);
         match.addPlayer(userManager.getUserById(userId, tokenManager.getToken()));
+    }
+
+    public List<User> getMatchPlayers(String matchId) {
+        Match match = matchManager.getMatchById(matchId);
+        return match.getPlayerList();
+    }
+
+    public void setOauthCode(String code, String seq) {
+        userManager.setOauthCode(seq, code);
     }
 }

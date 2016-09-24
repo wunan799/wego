@@ -4,7 +4,7 @@ var SignupModel = Class.extend({
 
     init: function () {
         this.user = global.getLocalParam('user');
-        this.matchId = global.getParameter('match');
+        this.matchId = getCookie('match');
     },
 
     loadMatch: function (callback) {

@@ -96,6 +96,26 @@ var Global = Class.extend({
     delLocalParam: function (param) {
         window.localStorage.removeItem(param);
     },
+
+    getOauthUser: function (controller, callback) {
+        var user = this.getLocalParam('user');
+
+        if (user != null) {
+            callback(controller, user);
+            return;
+        }
+
+        $.ajax({
+            type: 'get',
+            contentType: 'application/json',
+            url: this.api_url + 'user/get.do',
+
+            success: function (result) {
+                global.setLocalParam('user', result);
+                callback(controller, result);
+            }
+        });
+    },
 });
 
 var global = new Global();
