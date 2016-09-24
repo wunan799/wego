@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>发布比赛</title>
+    <!-- 引入 WeUI -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/weui/0.4.2/style/weui.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<!-- 使用 -->
+<div class="weui_cells_title">比赛信息</div>
+<div class="weui_cells weui_cells_form">
+    <div class="weui_cell">
+        <div class="weui_cell_hd">
+            <label class="weui_label">标题</label>
+        </div>
+        <div class="weui_cell_bd weui_cell_primary">
+            <input id="title" class="weui_input" type="text" placeholder="请输入标题">
+        </div>
+    </div>
+    <div class="weui_cell">
+        <div class="weui_cell_hd">
+            <label class="weui_label">时间</label>
+        </div>
+        <div class="weui_cell_bd weui_cell_primary">
+            <input id="time" class="weui_input" type="datetime-local">
+        </div>
+    </div>
+    <div class="weui_cell">
+        <div class="weui_cell_hd">
+            <div class="weui_label">球场</div>
+        </div>
+        <div class="weui_cell_bd weui_cell_primary">
+            <input id="pitch" type="text" class="weui_input" placeholder="请输入球场名称"/>
+        </div>
+    </div>
+    <div class="weui_cell">
+        <div class="weui_cell_hd">
+            <div class="weui_label">地址</div>
+        </div>
+        <div class="weui_cell_bd weui_cell_primary">
+            <input id="pitchAddress" type="text" class="weui_input" placeholder="请输入球场位置"/>
+        </div>
+    </div>
+    <div class="weui_cell">
+        <div class="weui_cell_hd">
+            <div class="weui_label">对手</div>
+        </div>
+        <div class="weui_cell_bd weui_cell_primary">
+            <input id="opponet" type="text" class="weui_input" placeholder="请输入比赛对手"/>
+        </div>
+    </div>
+
+    <!--<div class="weui_cells_title">备注信息</div>-->
+    <div class="weui_cell">
+        <div class="weui_cell_hd">
+            <div class="weui_label">备注</div>
+        </div>
+        <div class="weui_cell_bd weui_cell_primary">
+            <textarea class="weui_textarea" id="remark" rows="3"></textarea>
+        </div>
+    </div>
+</div>
+
+
+<div class="weui_btn_area">
+    <a class="weui_btn weui_btn_primary" href="javascript:" id="submit">提交</a>
+</div>
+</body>
+<script src="http://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+<script data-main="js/app.js" src="./js/require.js"></script>
+</html>

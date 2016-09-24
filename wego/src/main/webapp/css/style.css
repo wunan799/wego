@@ -1,0 +1,9 @@
+body{
+    background-color: #efeff4;
+}
+.weui_label{
+    width: 5em;
+}
+.weui_select{
+    padding-left: 0;
+}

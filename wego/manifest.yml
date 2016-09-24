@@ -1,0 +1,9 @@
+applications:
+- path: build/libs/wego-1.0.war
+  memory: 256M
+  instances: 1
+  domain: au-syd.mybluemix.net
+  name: wego
+  host: wego
+  disk_quota: 1024M
+  buildpack: java_buildpack
