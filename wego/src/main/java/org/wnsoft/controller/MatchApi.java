@@ -14,6 +14,7 @@ import org.wnsoft.dto.MatchDto;
 import org.wnsoft.dto.PubMatchDto;
 import org.wnsoft.entity.User;
 import org.wnsoft.service.MatchService;
+import org.wnsoft.utils.WnResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class MatchApi {
 
     @RequestMapping(value = "/match/add.do", method = RequestMethod.POST)
     @ResponseBody
-    public String addMatch(@RequestBody MatchDto matchDto) {
+    public WnResult addMatch(@RequestBody MatchDto matchDto) {
         Match match = matchService.addMatch(matchDto.getTitle()
                 , matchDto.getContent(), matchDto.getTime()
                 , matchDto.getPitch(), matchDto.getOpponent());
@@ -39,32 +40,35 @@ public class MatchApi {
         toPartyList.add("2");
         pubMatchDto.setToParty(toPartyList);
         this.publishMatch(pubMatchDto);
-        return match.getMatchId();
+        return new WnResult(match.getMatchId());
     }
 
     @RequestMapping(value = "/match/publish.do", method = RequestMethod.POST)
     @ResponseBody
-    public void publishMatch(@RequestBody PubMatchDto pubMatchDto) {
+    public WnResult publishMatch(@RequestBody PubMatchDto pubMatchDto) {
         matchService.publishMatch(pubMatchDto.getMatchId()
                 , pubMatchDto.getToUser(), pubMatchDto.getToParty()
                 , pubMatchDto.getAgentId());
+        return WnResult.SUCCESS;
     }
 
     @RequestMapping(value = "/user/get.do", method = RequestMethod.GET)
-    public User getOauthUser() {
+    @ResponseBody
+    public WnResult getOauthUser() {
         User user = matchService.getOauthUser();
-        return user;
+        return new WnResult(user);
     }
 
     @RequestMapping(value = "/user/callback.do", method = RequestMethod.GET)
     @ResponseBody
-    public void onOauthCallback(String code, String state) {
+    public WnResult onOauthCallback(String code, String state) {
         matchService.setOauthCode(code, state);
+        return WnResult.SUCCESS;
     }
 
     @RequestMapping(value = "/match/get.do", method = RequestMethod.GET)
     @ResponseBody
-    public MatchDto getMatch(String matchId) {
+    public WnResult getMatch(String matchId) {
         Match match = matchService.getMatch(matchId);
         MatchDto matchDto = new MatchDto();
         matchDto.setMatchId(matchId);
@@ -77,18 +81,19 @@ public class MatchApi {
         matchDto.setStatus(match.getStatus());
         matchDto.setScore(match.getScore());
         matchDto.setOppScore(match.getOppScore());
-        return matchDto;
+        return new WnResult(matchDto);
     }
 
     @RequestMapping(value = "/match/signup.do", method = RequestMethod.GET)
     @ResponseBody
-    public void signupMatch(String matchId, String userId) {
+    public WnResult signupMatch(String matchId, String userId) {
         matchService.signupMatch(matchId, userId);
+        return WnResult.SUCCESS;
     }
 
     @RequestMapping(value = "/match/players.do", method = RequestMethod.GET)
     @ResponseBody
-    public List<User> getMatchPlayers(String matchId) {
-        return matchService.getMatchPlayers(matchId);
+    public WnResult getMatchPlayers(String matchId) {
+        return new WnResult(matchService.getMatchPlayers(matchId));
     }
 }

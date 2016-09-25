@@ -1,24 +1,20 @@
 var Global = Class.extend({
-    api_url : '/api/',
+    api_url: '/api/',
 
     init: function () {
-        requirejs(['utility/loading'], function () {
-            var loading = new LoadingBox(getImagePath() + 'prettyPhoto/default/loader.gif');
+        $.ajaxSetup({
+            beforeSend: function () {
+                $.weui.loading("正在加载");
+            },
 
-            $.ajaxSetup({
-                beforeSend: function () {
-                    loading.show();
-                },
+            complete: function (event, xhr, options) {
+                $.weui.hideLoading();
 
-                complete: function (event, xhr, options) {
-                    loading.hide();
-
-                    if (event.status != 200) {
-                        var dlg = new ModalDlg();
-                        dlg.show('errorResult', 'ajax异常', '获取数据失败');
-                    }
+                if (event.status != 200) {
+                    $.weui.alert('获取数据失败: '
+                        + event.responseJSON.errorMsg, {title: '出错了'});
                 }
-            });
+            }
         });
     },
 
@@ -111,8 +107,13 @@ var Global = Class.extend({
             url: this.api_url + 'user/get.do',
 
             success: function (result) {
-                global.setLocalParam('user', result);
-                callback(controller, result);
+                if (result.errorCode == 0) {
+                    global.setLocalParam('user', result.object);
+                    callback(controller, result.object);
+                } else {
+                    $.weui.alert('获取微信用户授权错误：' +
+                        result.errorMsg, {title: '获取授权'});
+                }
             }
         });
     },

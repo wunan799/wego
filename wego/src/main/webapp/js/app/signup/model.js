@@ -15,7 +15,12 @@ var SignupModel = Class.extend({
             model: this,
 
             success: function (result) {
-                callback(result);
+                if (result.errorCode == 0) {
+                    callback(result.object);
+                } else {
+                    var dlg = new ModalDlg();
+                    $.weui.alert('获取比赛失败：' + result.errorMsg);
+                }
             }
         });
     },
@@ -31,6 +36,11 @@ var SignupModel = Class.extend({
             model: this,
 
             success: function (result) {
+                if (result.errorCode != 0) {
+                    $.weui.alert('比赛报名失败：' + result.errorMsg);
+                } else {
+                    $.weui.toast('报名成功');
+                }
             }
         });
     }

@@ -1,6 +1,6 @@
 applications:
 - path: build/libs/wego-1.0.war
-  memory: 256M
+  memory: 512M
   instances: 1
   domain: au-syd.mybluemix.net
   name: wego

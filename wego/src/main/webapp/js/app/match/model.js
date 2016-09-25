@@ -11,7 +11,13 @@ var MatchModel = Class.extend({
             data: JSON.stringify(match),
 
             success: function (result) {
-                alert(result);
+                var dlg = new ModalDlg();
+
+                if (result.errorCode == 0) {
+                    $.weui.toast('添加比赛成功');
+                } else {
+                    $.weui.alert('添加比赛失败：' + result.errorMsg);
+                }
             }
         });
     }

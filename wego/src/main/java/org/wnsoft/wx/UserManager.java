@@ -37,6 +37,7 @@ public class UserManager {
             try {
                 wait(5000);
             } catch (InterruptedException e) {
+                logger.warn("获取微信授权异常: {}", e.toString());
                 throw new WnException(e);
             }
 
@@ -44,6 +45,7 @@ public class UserManager {
             codeMap.remove(seq);
 
             if ((code == null) || code.equals("0")) {
+                logger.warn("获取微信授权超时，Seq: {}", seq);
                 throw new WnException("没有获取到认证码");
             }
         }
@@ -54,6 +56,7 @@ public class UserManager {
     }
 
     public void setOauthCode(String seq, String code) {
+        logger.info("获取到微信授权码，Seq：{}，Code：{}", seq, code);
         synchronized (codeMap) {
             String old = codeMap.get(seq);
 
