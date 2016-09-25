@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class UserManager {
     private static Logger logger = LoggerFactory.getLogger(UserManager.class);
     private static final String CALLBACK_URL =
-            "http://wego.au-syd.mybluemix.net/api/user/callback.do";
+            "http%3a%2f%2fwego.au-syd.mybluemix.net%2fapi%2fuser%2fcallback.do";
     private final Map<String, User> userMap = new ConcurrentHashMap<>();
     private final Map<String, String> codeMap = new HashMap<>();
     private AtomicLong oauthSeq = new AtomicLong(1L);
@@ -35,7 +35,7 @@ public class UserManager {
             doGetOauthCode(seq);
 
             try {
-                wait(5000);
+                codeMap.wait(5000);
             } catch (InterruptedException e) {
                 logger.warn("获取微信授权异常: {}", e.toString());
                 throw new WnException(e);
@@ -62,7 +62,7 @@ public class UserManager {
 
             if ("0".equals(old)) {
                 codeMap.put(seq, code);
-                notify();
+                codeMap.notify();
             }
         }
     }
@@ -86,7 +86,7 @@ public class UserManager {
         try {
             HttpUtils httpUtils = new HttpUtils();
             HttpRespons respons = httpUtils.sendGet(url);
-            logger.info("获取授权CODE结果：{}", respons.code);
+            logger.info("获取授权CODE结果：{}", respons.content);
         } catch (IOException e) {
             throw new WnException(WnException.ERROR_IO, e);
         }

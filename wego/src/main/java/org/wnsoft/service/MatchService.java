@@ -120,7 +120,7 @@ public class MatchService {
         messageManager.publish(mpNewsMsg, tokenManager.getToken());
     }
 
-    public User getOauthUser() {
+    public User getOauthUser(String code) {
         return userManager.getOauthUser(tokenManager.getToken());
     }
 

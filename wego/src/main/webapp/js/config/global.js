@@ -101,21 +101,28 @@ var Global = Class.extend({
             return;
         }
 
-        $.ajax({
-            type: 'get',
-            contentType: 'application/json',
-            url: this.api_url + 'user/get.do',
+        var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?' +
+            'appid=wx3acffe302f7bce92&redirect_uri=' +
+            'http%3a%2f%2fwego.au-syd.mybluemix.net%2fapi%2fuser%2fcallback.do' +
+            '&response_type=code&scope=snsapi_base&state=' +
+            btoa(window.location.pathname) + '#wechat_redirect';
+        window.location.href = url;
 
-            success: function (result) {
-                if (result.errorCode == 0) {
-                    global.setLocalParam('user', result.object);
-                    callback(controller, result.object);
-                } else {
-                    $.weui.alert('获取微信用户授权错误：' +
-                        result.errorMsg, {title: '获取授权'});
-                }
-            }
-        });
+        //$.ajax({
+        //    type: 'get',
+        //    contentType: 'application/json',
+        //    url: url,
+        //
+        //    success: function (result) {
+        //        if (result.errorCode == 0) {
+        //            global.setLocalParam('user', result.object);
+        //            callback(controller, result.object);
+        //        } else {
+        //            $.weui.alert('获取微信用户授权错误：' +
+        //                result.errorMsg, {title: '获取授权'});
+        //        }
+        //    }
+        //});
     },
 });
 

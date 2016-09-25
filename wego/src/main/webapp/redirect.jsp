@@ -1,14 +1,12 @@
-<%@ page import="com.alibaba.fastjson.JSON" %>
-<%@ page import="com.alibaba.fastjson.JSONObject" %>
-<%@ page import="java.util.Map" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
-<% String targetUrl = request.getParameter("target");
-    JSONObject jsonObject = JSON.parseObject(request.getParameter("params"));
-
-    for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
-        Cookie cookie = new Cookie(entry.getKey(), entry.getValue().toString());
-        response.addCookie(cookie);
-    }
+<% String targetUrl = request.getParameter("target")
+        + "?params=" + request.getParameter("params");
+//    JSONObject jsonObject = JSON.parseObject(request.getParameter("params"));
+//
+//    for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
+//        Cookie cookie = new Cookie(entry.getKey(), entry.getValue().toString());
+//        response.addCookie(cookie);
+//    }
 %>
 <jsp:include page="<%= targetUrl%>"></jsp:include>
 <%--<html lang="en">--%>

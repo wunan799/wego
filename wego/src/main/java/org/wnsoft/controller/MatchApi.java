@@ -3,6 +3,7 @@
  */
 package org.wnsoft.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,8 +17,10 @@ import org.wnsoft.entity.User;
 import org.wnsoft.service.MatchService;
 import org.wnsoft.utils.WnResult;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/api", produces = "application/json; charset=UTF-8")
@@ -61,8 +64,13 @@ public class MatchApi {
 
     @RequestMapping(value = "/user/callback.do", method = RequestMethod.GET)
     @ResponseBody
-    public WnResult onOauthCallback(String code, String state) {
-        matchService.setOauthCode(code, state);
+    public WnResult onOauthCallback(HttpServletRequest request
+            , String code, String state) {
+        matchService.(code, state);
+        Map map = request.getParameterMap();
+        JSONObject jsonObject = new JSONObject(map);
+        JSONObject paramObject = jsonObject.getJSONObject("params");
+        paramObject.put("user", )
         return WnResult.SUCCESS;
     }
 
