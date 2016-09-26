@@ -3,7 +3,7 @@ var MatchView = Class.extend({
     timeDom: $('#time'),
 
     init: function () {
-        // this.timeDom.val(new Date().());
+         this.timeDom.val(new Date().toLocaleString());
     },
 
     getMatchData: function () {
@@ -15,6 +15,7 @@ var MatchView = Class.extend({
         match.pitch = $('#pitch').val();
         match.pitchAddress = $('#pitchAddress').val();
         match.opponent = $('#opponet').val();
+        match.shirtColor = $("#shirtColor").find("option:selected").text();
         return match;
     }
 });

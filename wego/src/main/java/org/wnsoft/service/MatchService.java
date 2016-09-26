@@ -36,9 +36,9 @@ public class MatchService {
             "2oIjYXZVfIm1i9bmru9PlVKMCH9k_5LQ2FQZJDMjy6Wa90Kubtg4gqSA5Lp4SSlcI"
     };
 
-    public Match addMatch(String title, String content
+    public Match addMatch(String title, String shirtColor
             , long time, String pitch, String opponent) {
-        Match match = new Match(title, content, time, pitch, opponent);
+        Match match = new Match(title, time, pitch, opponent, shirtColor);
         matchManager.addMatch(match);
         return match;
     }
@@ -92,6 +92,10 @@ public class MatchService {
             content += "<tr><td>球场地址</td><td>" + match.getPitchAddress() + "</td></tr>";
         }
 
+        if (match.getShirtColor() != null) {
+            content += "<tr><td>球衣颜色</td><td>" + match.getShirtColor() + "</td></tr>";
+        }
+
         if (match.getOpponent() != null) {
             content += "<tr><td>比赛对手</td><td>" + match.getOpponent() + "</td></tr>";
         }
@@ -108,6 +112,12 @@ public class MatchService {
         articles.setContent(content);
         articles.setShow_cover_pic("1");
         articles.setDigest("比赛时间：" + matchTime);
+
+        if (match.getCreatorId() != null) {
+            articles.setAuthor(userManager.getUserById(match.getCreatorId()
+                    , tokenManager.getToken()).getName());
+        }
+
         mpNewsMsg.getMpnews().addArticles(articles);
         messageManager.publish(mpNewsMsg, tokenManager.getToken());
     }
