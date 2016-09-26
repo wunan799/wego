@@ -1,5 +1,5 @@
 function getHtmlName() {
-    var strUrl = window.location.href;
+    var strUrl = window.location.pathname;
     var arrUrl = strUrl.split("/");
     var page = arrUrl[arrUrl.length - 1];
     var name = page.substr(0, page.lastIndexOf('.'));
@@ -74,4 +74,10 @@ function checkCookie()
             setCookie('username',username,365)
         }
     }
+}
+
+function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
 }

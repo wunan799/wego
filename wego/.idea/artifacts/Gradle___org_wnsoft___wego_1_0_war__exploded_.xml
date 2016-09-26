@@ -1,14 +1,14 @@
 <component name="ArtifactManager">
-  <artifact type="war" name="Gradle : org.wnsoft:wego : wego-1.0.war">
-    <output-path>$PROJECT_DIR$/out/artifacts/wego</output-path>
+  <artifact type="exploded-war" name="Gradle : org.wnsoft : wego-1.0.war (exploded)">
+    <output-path>$PROJECT_DIR$/out/artifacts/wego/exploded/wego-1.0.war</output-path>
     <properties id="gradle-properties">
       <options external-project-path="$PROJECT_DIR$" />
     </properties>
-    <root id="archive" name="wego-1.0.war">
-      <element id="javaee-facet-resources" facet="wego/web/Web Gradle : wego-1.0.war" />
+    <root id="root">
+      <element id="javaee-facet-resources" facet="wego_main/web/Web Gradle : wego-1.0.war" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="wego" />
+          <element id="module-output" name="wego_main" />
           <element id="dir-copy" path="$PROJECT_DIR$/build/resources/main" />
         </element>
         <element id="directory" name="lib">
@@ -17,16 +17,15 @@
           <element id="library" level="project" name="Gradle: log4j:log4j:1.2.17" />
           <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.21" />
           <element id="library" level="project" name="Gradle: org.slf4j:slf4j-log4j12:1.7.21" />
+          <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-aop:4.3.3.RELEASE" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-beans:4.3.3.RELEASE" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-context:4.3.3.RELEASE" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-core:4.3.3.RELEASE" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-expression:4.3.3.RELEASE" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-web:4.3.3.RELEASE" />
+          <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
           <element id="library" level="project" name="Gradle: commons-logging:commons-logging:1.2" />
-          <element id="library" level="project" name="Gradle: javax.servlet:servlet-api:2.5" />
-          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/redis.clients/jedis/2.9.0/292bc9cc26553acd3cccc26f2f95620bf88a04c2/jedis-2.9.0.jar" />
-          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-pool2/2.4.2/e5f4f28f19d57716fbc3989d7a357ebf1e454fea/commons-pool2-2.4.2.jar" />
         </element>
       </element>
       <element id="directory" name="META-INF">

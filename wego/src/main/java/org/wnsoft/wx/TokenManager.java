@@ -26,7 +26,7 @@ public class TokenManager {
     public String getToken() {
         if (token == null) {
             return doGetToken();
-        } else if ((System.currentTimeMillis() - allocTime) > expireTime) {
+        } else if ((System.currentTimeMillis() - allocTime) / 1000 > expireTime) {
             return doGetToken();
         } else {
             return token;

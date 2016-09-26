@@ -1,10 +1,10 @@
-var SignupModel = Class.extend({
+var DebugModel = Class.extend({
     user: null,
     matchId: null,
 
     init: function () {
         this.user = global.getLocalParam('user');
-        this.matchId = getQueryString('match');
+        this.matchId = getCookie('match');
     },
 
     loadMatch: function (callback) {
@@ -18,14 +18,15 @@ var SignupModel = Class.extend({
                 if (result.errorCode == 0) {
                     callback(result.object);
                 } else {
+                    var dlg = new ModalDlg();
                     $.weui.alert('获取比赛失败：' + result.errorMsg);
                 }
             }
         });
     },
 
-    signupMatch: function () {
-        var url = global.api_url + 'match/signup.do?matchId='
+    sebugMatch: function () {
+        var url = global.api_url + 'match/sebug.do?matchId='
             + this.matchId + '&userId=' + this.user.userid;
 
         $.ajax({

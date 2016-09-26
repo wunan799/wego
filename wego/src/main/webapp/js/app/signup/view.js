@@ -12,7 +12,7 @@ var SignupView = Class.extend({
 
     showMatch: function (match) {
         $('#title').val(match.title);
-        $('#time').val(new Date(match.time).toLocaleDateString());
+        $('#time').val(new Date(match.time).toLocaleString());
         $('#pitch').val(match.pitch);
         $('#opponent').val(match.opponent);
         $('#remark').val(match.content);

@@ -84,7 +84,6 @@ var Global = Class.extend({
         }
     },
 
-
     delParameter: function (param) {
         window.sessionStorage.removeItem(param);
     },
@@ -93,36 +92,47 @@ var Global = Class.extend({
         window.localStorage.removeItem(param);
     },
 
-    getOauthUser: function (controller, callback) {
+    checkOauth: function (callback) {
         var user = this.getLocalParam('user');
 
         if (user != null) {
-            callback(controller, user);
+            callback(true);
             return;
         }
 
+        $.weui.loading('获取授权');
         var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?' +
             'appid=wx3acffe302f7bce92&redirect_uri=' +
             'http%3a%2f%2fwego.au-syd.mybluemix.net%2fapi%2fuser%2fcallback.do' +
             '&response_type=code&scope=snsapi_base&state=' +
-            btoa(window.location.pathname) + '#wechat_redirect';
-        window.location.href = url;
+            btoa(window.location.pathname + window.location.search) + '#wechat_redirect';
+        var iframe = document.createElement('iframe');
+        iframe.id = 'iframe1';
+        iframe.name = 'iframe1';
+        iframe.src = url;
+        iframe.width = 0;
+        iframe.height = 0;
+        document.body.appendChild(iframe);
+        var totalTime = 0;
 
-        //$.ajax({
-        //    type: 'get',
-        //    contentType: 'application/json',
-        //    url: url,
-        //
-        //    success: function (result) {
-        //        if (result.errorCode == 0) {
-        //            global.setLocalParam('user', result.object);
-        //            callback(controller, result.object);
-        //        } else {
-        //            $.weui.alert('获取微信用户授权错误：' +
-        //                result.errorMsg, {title: '获取授权'});
-        //        }
-        //    }
-        //});
+        this.checkResult = function (time) {
+            if (time > 5000) {
+                $.weui.hideLoading();
+                $.weui.alert('获取授权超时，请刷新重试');
+                callback(false);
+                return;
+            }
+
+            if (global.getLocalParam('user') == null) {
+                time += 100;
+                setTimeout('global.checkResult(' + time + ')', 100);
+            } else {
+                $.weui.hideLoading();
+                callback(true);
+            }
+        };
+
+        this.checkResult(totalTime);
     },
 });
 
