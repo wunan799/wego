@@ -16,15 +16,10 @@ public class MatchManager {
     private JedisRepo jedisRepo = new JedisRepo();
 
     public MatchManager() {
-        List<byte[]> bytes = jedisRepo.loadList(MATCH_MANAGER);
+        List<String> idList = jedisRepo.loadList(MATCH_MANAGER);
 
-        try {
-            for (byte[] tmp : bytes) {
-                String matchId = SerializeHelper.byteToObject(tmp);
-                matchList.add(jedisRepo.load(matchId));
-            }
-        } catch (Exception e) {
-            throw new WnException(e);
+        for (String matchId : idList) {
+            matchList.add(jedisRepo.load(matchId));
         }
     }
 

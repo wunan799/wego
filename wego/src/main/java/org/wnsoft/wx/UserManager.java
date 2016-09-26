@@ -23,48 +23,11 @@ public class UserManager {
     private static final String CALLBACK_URL =
             "http%3a%2f%2fwego.au-syd.mybluemix.net%2fapi%2fuser%2fcallback.do";
     private final Map<String, User> userMap = new ConcurrentHashMap<>();
-    private final Map<String, String> codeMap = new HashMap<>();
-    private AtomicLong oauthSeq = new AtomicLong(1L);
 
-    public User getOauthUser(String token) {
-        String seq = Long.toString(oauthSeq.getAndIncrement());
-        String code;
-
-        synchronized (codeMap) {
-            codeMap.put(seq, "0");
-            doGetOauthCode(seq);
-
-            try {
-                codeMap.wait(5000);
-            } catch (InterruptedException e) {
-                logger.warn("获取微信授权异常: {}", e.toString());
-                throw new WnException(e);
-            }
-
-            code = codeMap.get(seq);
-            codeMap.remove(seq);
-
-            if ((code == null) || code.equals("0")) {
-                logger.warn("获取微信授权超时，Seq: {}", seq);
-                throw new WnException("没有获取到认证码");
-            }
-        }
-
+    public User getOauthUser(String code, String token) {
         User user = doGetUser(doGetUserId(code, token), token);
         userMap.put(user.getUserid(), user);
         return user;
-    }
-
-    public void setOauthCode(String seq, String code) {
-        logger.info("获取到微信授权码，Seq：{}，Code：{}", seq, code);
-        synchronized (codeMap) {
-            String old = codeMap.get(seq);
-
-            if ("0".equals(old)) {
-                codeMap.put(seq, code);
-                codeMap.notify();
-            }
-        }
     }
 
     public User getUserById(String userId, String token) {
@@ -77,20 +40,20 @@ public class UserManager {
         return doGetUser(userId, token);
     }
 
-    protected void doGetOauthCode(String state) {
-        String url = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
-                "appid=wx3acffe302f7bce92&redirect_uri=" + CALLBACK_URL +
-                "&response_type=code&scope=snsapi_base&state=" + state +
-                "#wechat_redirect";
-
-        try {
-            HttpUtils httpUtils = new HttpUtils();
-            HttpRespons respons = httpUtils.sendGet(url);
-            logger.info("获取授权CODE结果：{}", respons.content);
-        } catch (IOException e) {
-            throw new WnException(WnException.ERROR_IO, e);
-        }
-    }
+//    protected void doGetOauthCode(String state) {
+//        String url = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
+//                "appid=wx3acffe302f7bce92&redirect_uri=" + CALLBACK_URL +
+//                "&response_type=code&scope=snsapi_base&state=" + state +
+//                "#wechat_redirect";
+//
+//        try {
+//            HttpUtils httpUtils = new HttpUtils();
+//            HttpRespons respons = httpUtils.sendGet(url);
+//            logger.info("获取授权CODE结果：{}", respons.content);
+//        } catch (IOException e) {
+//            throw new WnException(WnException.ERROR_IO, e);
+//        }
+//    }
 
     protected String doGetUserId(String code, String token) {
         String url = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo";
