@@ -36,13 +36,13 @@ public class MatchApi {
     @RequestMapping(value = "/match/add.do", method = RequestMethod.POST)
     @ResponseBody
     public WnResult addMatch(@RequestBody MatchDto matchDto) {
-        Match match = matchService.addMatch(matchDto.getTitle()
-                , matchDto.getShirtColor(), matchDto.getTime()
-                , matchDto.getPitch(), matchDto.getOpponent());
-        match.setOpponent(matchDto.getOpponent());
+        Match match = new Match(matchDto.getTitle()
+                , matchDto.getTime(), matchDto.getPitch()
+                , matchDto.getOpponent(), matchDto.getShirtColor());
         match.setPitchAddress(matchDto.getPitchAddress());
         match.setContent(matchDto.getContent());
         match.setCreatorId(matchDto.getCreatorId());
+        matchService.addMatch(match);
         PubMatchDto pubMatchDto = new PubMatchDto();
         pubMatchDto.setAgentId(1);
         pubMatchDto.setMatchId(match.getMatchId());

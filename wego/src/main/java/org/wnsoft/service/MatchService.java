@@ -39,11 +39,8 @@ public class MatchService {
             "2oIjYXZVfIm1i9bmru9PlVKMCH9k_5LQ2FQZJDMjy6Wa90Kubtg4gqSA5Lp4SSlcI"
     };
 
-    public Match addMatch(String title, String shirtColor
-            , long time, String pitch, String opponent) {
-        Match match = new Match(title, time, pitch, opponent, shirtColor);
+    public void addMatch(Match match) {
         matchManager.addMatch(match);
-        return match;
     }
 
     public void publishMatch(String matchId, List<String> toUserList
@@ -134,7 +131,9 @@ public class MatchService {
 
     public void signupMatch(String matchId, String userId) {
         Match match = matchManager.getMatchById(matchId);
-        match.addPlayer(userManager.getUserById(userId, tokenManager.getToken()));
+        match.addPlayer(userManager.getUserById(userId
+                , tokenManager.getToken()));
+        matchManager.saveMatch(match);
     }
 
     public List<User> getMatchPlayers(String matchId) {
