@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class Match implements Serializable {
+    private static final long serialVersionUID = -4636651436073220629L;
     private String matchId;
     private String title;
     private String content;
@@ -25,6 +26,7 @@ public class Match implements Serializable {
     private List<User> playerList = new ArrayList<>();      //报名队员
     private String shirtColor;
     private String creatorId;
+    private String publishUrl;
 
     public Match(String matchId) {
         this.matchId = matchId;
@@ -132,6 +134,14 @@ public class Match implements Serializable {
 
     public void setCreatorId(String creatorId) {
         this.creatorId = creatorId;
+    }
+
+    public String getPublishUrl() {
+        return publishUrl;
+    }
+
+    public void setPublishUrl(String publishUrl) {
+        this.publishUrl = publishUrl;
     }
 
     public void addPlayer(User user) {

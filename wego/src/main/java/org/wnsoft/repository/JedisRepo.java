@@ -35,7 +35,7 @@ public class JedisRepo {
 
     public void append(String id, Object object) {
         jedis.connect();
-        jedis.lpush(id.getBytes(), SerializeHelper.objectToByte(object));
+        jedis.rpush(id.getBytes(), SerializeHelper.objectToByte(object));
     }
 
     public <T> T load(String id) {

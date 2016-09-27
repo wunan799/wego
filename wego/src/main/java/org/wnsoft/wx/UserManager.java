@@ -20,8 +20,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class UserManager {
     private static Logger logger = LoggerFactory.getLogger(UserManager.class);
-    private static final String CALLBACK_URL =
-            "http%3a%2f%2fwego.au-syd.mybluemix.net%2fapi%2fuser%2fcallback.do";
     private final Map<String, User> userMap = new ConcurrentHashMap<>();
 
     public User getOauthUser(String code, String token) {
@@ -39,21 +37,6 @@ public class UserManager {
 
         return doGetUser(userId, token);
     }
-
-//    protected void doGetOauthCode(String state) {
-//        String url = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
-//                "appid=wx3acffe302f7bce92&redirect_uri=" + CALLBACK_URL +
-//                "&response_type=code&scope=snsapi_base&state=" + state +
-//                "#wechat_redirect";
-//
-//        try {
-//            HttpUtils httpUtils = new HttpUtils();
-//            HttpRespons respons = httpUtils.sendGet(url);
-//            logger.info("获取授权CODE结果：{}", respons.content);
-//        } catch (IOException e) {
-//            throw new WnException(WnException.ERROR_IO, e);
-//        }
-//    }
 
     protected String doGetUserId(String code, String token) {
         String url = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo";

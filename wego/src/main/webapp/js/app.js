@@ -81,3 +81,16 @@ function getQueryString(name) {
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return unescape(r[2]); return null;
 }
+
+function dateToString(date) {
+    var result = date.getFullYear() + '年' + (date.getMonth() + 1)
+        + '月' + date.getDate() + '日 ' + date.getHours() + ':';
+
+    if (date.getMinutes() < 10) {
+        result += '0' + date.getMinutes();
+    } else {
+        result += date.getMinutes();
+    }
+
+    return result;
+}

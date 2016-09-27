@@ -13,6 +13,7 @@ var PlayersView = Class.extend({
                 + '</p></div></div>';
         }
 
+        $('#title').html('报名球员列表：共' + players.length + '人报名');
         $('#players').html(content);
     }
 });

@@ -23,6 +23,7 @@ import org.wnsoft.utils.WnResult;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.ListIterator;
 
 @Controller
 @RequestMapping(value = "/api", produces = "application/json; charset=UTF-8")
@@ -36,7 +37,7 @@ public class MatchApi {
     @ResponseBody
     public WnResult addMatch(@RequestBody MatchDto matchDto) {
         Match match = matchService.addMatch(matchDto.getTitle()
-                , matchDto.getContent(), matchDto.getTime()
+                , matchDto.getShirtColor(), matchDto.getTime()
                 , matchDto.getPitch(), matchDto.getOpponent());
         match.setOpponent(matchDto.getOpponent());
         match.setPitchAddress(matchDto.getPitchAddress());
@@ -73,8 +74,11 @@ public class MatchApi {
     public WnResult getMatchList() {
         List<Match> matchList = matchService.getMatchList();
         List<MatchDto> matchDtoList = new ArrayList<>(matchList.size());
+        ListIterator<Match> iterator = matchList.listIterator(matchList.size());
 
-        for (Match match : matchList) {
+        //按最近发布的顺序获取
+        while (iterator.hasPrevious()) {
+            Match match = iterator.previous();
             MatchDto matchDto = new MatchDto();
             matchDto.setMatchId(match.getMatchId());
             matchDto.setTitle(match.getTitle());
@@ -127,6 +131,8 @@ public class MatchApi {
         matchDto.setStatus(match.getStatus());
         matchDto.setScore(match.getScore());
         matchDto.setOppScore(match.getOppScore());
+        matchDto.setCreatorId(match.getCreatorId());
+        matchDto.setShirtColor(match.getShirtColor());
         return new WnResult(matchDto);
     }
 
@@ -141,5 +147,11 @@ public class MatchApi {
     @ResponseBody
     public WnResult getMatchPlayers(String matchId) {
         return new WnResult(matchService.getMatchPlayers(matchId));
+    }
+
+    @RequestMapping(value = "/department/get.do", method = RequestMethod.GET)
+    @ResponseBody
+    public WnResult getDepartment(int id) {
+        return new WnResult(matchService.getDepartment(id));
     }
 }
