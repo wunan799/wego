@@ -28,7 +28,7 @@ var MatchListController = Class.extend({
                 window.location.href = '/players.html?match=' + matchId;
             }
         },{
-            label: '比赛详情',
+            label: '修改比赛',
             onClick: function (){
             }
         }]);

@@ -44,4 +44,8 @@ public class MatchManager {
 
         throw new WnException(WnException.ERROR_NOTFOUND, "没有找到指定的比赛信息");
     }
+
+    public void saveMatch(Match match) {
+        jedisRepo.save(match.getMatchId(), match);
+    }
 }

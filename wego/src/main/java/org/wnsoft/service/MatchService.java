@@ -5,9 +5,11 @@ package org.wnsoft.service;
 
 import org.wnsoft.domain.Match;
 import org.wnsoft.domain.MatchManager;
+import org.wnsoft.entity.Department;
 import org.wnsoft.entity.MpNewsMsg;
 import org.wnsoft.entity.User;
 import org.wnsoft.utils.WnException;
+import org.wnsoft.wx.DepartmentManager;
 import org.wnsoft.wx.MessageManager;
 import org.wnsoft.wx.TokenManager;
 import org.wnsoft.wx.UserManager;
@@ -24,6 +26,7 @@ public class MatchService {
     private MessageManager messageManager = new MessageManager();
     private TokenManager tokenManager = new TokenManager();
     private UserManager userManager = new UserManager();
+    private DepartmentManager departmentManager = new DepartmentManager();
 
     private final String[] imageArray = {
             "2Aa7FZzrzIjJzFxYBP3UVPfywWnl-tuE2OabjQA3NoOry5cdRA6fY_yLcftdGVndU",
@@ -36,21 +39,13 @@ public class MatchService {
             "2oIjYXZVfIm1i9bmru9PlVKMCH9k_5LQ2FQZJDMjy6Wa90Kubtg4gqSA5Lp4SSlcI"
     };
 
-    public Match addMatch(String title, String shirtColor
-            , long time, String pitch, String opponent) {
-        Match match = new Match(title, time, pitch, opponent, shirtColor);
+    public void addMatch(Match match) {
         matchManager.addMatch(match);
-        return match;
     }
 
     public void publishMatch(String matchId, List<String> toUserList
             , List<String> toPartyList, int agentId) {
         Match match = matchManager.getMatchById(matchId);
-
-        if (match == null) {
-            throw new WnException(WnException.ERROR_NOTFOUND, "没有找到比赛信息");
-        }
-
         MpNewsMsg mpNewsMsg = new MpNewsMsg();
 
         if ((toUserList != null) && (!toUserList.isEmpty())) {
@@ -85,23 +80,23 @@ public class MatchService {
                 , DateFormat.SHORT, Locale.CHINESE);
         df.setTimeZone(TimeZone.getTimeZone("CTT"));//asia/shanghai
         String matchTime = df.format(new Date(match.getTime()));
-        content += "<tr><td>比赛时间</td><td>" +  matchTime + "</td></tr>";
-        content += "<tr><td>比赛球场</td><td>" + match.getPitch() + "</td></tr>";
+        content += "<tr><td>时间</td><td>" +  matchTime + "</td></tr>";
+        content += "<tr><td>球场</td><td>" + match.getPitch() + "</td></tr>";
 
         if (match.getPitchAddress() != null) {
-            content += "<tr><td>球场地址</td><td>" + match.getPitchAddress() + "</td></tr>";
+            content += "<tr><td>地址</td><td>" + match.getPitchAddress() + "</td></tr>";
         }
 
         if (match.getShirtColor() != null) {
-            content += "<tr><td>球衣颜色</td><td>" + match.getShirtColor() + "</td></tr>";
+            content += "<tr><td>球衣</td><td>" + match.getShirtColor() + "</td></tr>";
         }
 
         if (match.getOpponent() != null) {
-            content += "<tr><td>比赛对手</td><td>" + match.getOpponent() + "</td></tr>";
+            content += "<tr><td>对手</td><td>" + match.getOpponent() + "</td></tr>";
         }
 
         if (match.getContent() != null) {
-            content += "<tr><td>比赛备注</td><td>" + match.getContent() + "</td></tr>";
+            content += "<tr><td>备注</td><td>" + match.getContent() + "</td></tr>";
         }
 
         content += "</table><a href=\"" + signupUrl + "\" " +
@@ -136,11 +131,17 @@ public class MatchService {
 
     public void signupMatch(String matchId, String userId) {
         Match match = matchManager.getMatchById(matchId);
-        match.addPlayer(userManager.getUserById(userId, tokenManager.getToken()));
+        match.addPlayer(userManager.getUserById(userId
+                , tokenManager.getToken()));
+        matchManager.saveMatch(match);
     }
 
     public List<User> getMatchPlayers(String matchId) {
         Match match = matchManager.getMatchById(matchId);
         return match.getPlayerList();
+    }
+
+    public List<Department> getDepartment(int id) {
+        return departmentManager.getDepartmentList(tokenManager.getToken(), id);
     }
 }

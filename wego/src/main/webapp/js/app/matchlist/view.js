@@ -13,7 +13,7 @@ var MatchListView = Class.extend({
                 '</div>' +
                 '<div class="weui-media__bd weui_cell_primary">' +
                     '<h3 class="title">' + matchList[key].title + '</h3>' +
-                    '<p class="summary">' + new Date(matchList[key].time).toLocaleString() + '</p>' +
+                    '<p class="summary">比赛时间：' + dateToString(new Date(matchList[key].time)) + '</p>' +
                 '</div>' +
                 '<div class="weui_cell_ft"></div></div>';
         }

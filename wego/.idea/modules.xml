@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/wego.iml" filepath="$PROJECT_DIR$/.idea/modules/wego.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/wego_main.iml" filepath="$PROJECT_DIR$/.idea/modules/wego_main.iml" group="wego" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/wego_test.iml" filepath="$PROJECT_DIR$/.idea/modules/wego_test.iml" group="wego" />
     </modules>
   </component>
 </project>
