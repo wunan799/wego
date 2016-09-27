@@ -16,6 +16,8 @@ public class MatchDto implements Serializable {
     private int status;           //0-未开始 1-进行中 2-结束 3-取消
     private int score;
     private int oppScore;         //对手分数
+    private String creatorId;
+    private String shirtColor;
 
     public String getMatchId() {
         return matchId;
@@ -95,5 +97,21 @@ public class MatchDto implements Serializable {
 
     public void setOppScore(int oppScore) {
         this.oppScore = oppScore;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public String getShirtColor() {
+        return shirtColor;
+    }
+
+    public void setShirtColor(String shirtColor) {
+        this.shirtColor = shirtColor;
     }
 }

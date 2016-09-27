@@ -40,6 +40,8 @@ public class MatchApi {
                 , matchDto.getPitch(), matchDto.getOpponent());
         match.setOpponent(matchDto.getOpponent());
         match.setPitchAddress(matchDto.getPitchAddress());
+        match.setContent(matchDto.getContent());
+        match.setCreatorId(matchDto.getCreatorId());
         PubMatchDto pubMatchDto = new PubMatchDto();
         pubMatchDto.setAgentId(1);
         pubMatchDto.setMatchId(match.getMatchId());

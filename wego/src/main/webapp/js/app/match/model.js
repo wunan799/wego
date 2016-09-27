@@ -1,5 +1,8 @@
 var MatchModel = Class.extend({
+    user: null,
+
     init: function () {
+        this.user = global.getLocalParam('user');
     },
 
     saveMatch: function (match) {

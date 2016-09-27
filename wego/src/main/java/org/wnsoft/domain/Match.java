@@ -23,18 +23,20 @@ public class Match implements Serializable {
     private int score;
     private int oppScore;         //对手分数
     private List<User> playerList = new ArrayList<>();      //报名队员
+    private String shirtColor;
+    private String creatorId;
 
     public Match(String matchId) {
         this.matchId = matchId;
     }
 
-    public Match(String title, String content
-            , long time, String pitch, String opponent) {
+    public Match(String title, long time, String pitch
+            , String opponent, String shirtColor) {
         this.title = title;
-        this.content = content;
         this.time = time;
         this.pitch = pitch;
         this.opponent = opponent;
+        this.shirtColor = shirtColor;
         this.matchId = UUID.randomUUID().toString();
     }
 
@@ -114,6 +116,22 @@ public class Match implements Serializable {
 
     public int getOppScore() {
         return oppScore;
+    }
+
+    public String getShirtColor() {
+        return shirtColor;
+    }
+
+    public void setShirtColor(String shirtColor) {
+        this.shirtColor = shirtColor;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
     }
 
     public void addPlayer(User user) {

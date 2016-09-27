@@ -16,6 +16,7 @@ var MatchController = Class.extend({
 
     submit: function () {
         var match = this.matchView.getMatchData();
+        match.creatorId = this.matchModel.user.userid;
         this.matchModel.saveMatch(match);
     }
 });
@@ -23,7 +24,11 @@ var MatchController = Class.extend({
 define(function () {
     return {
         setup: function () {
-            matchController = new MatchController();
+            global.checkOauth(function (result) {
+                if (result) {
+                    matchController = new MatchController();
+                }
+            });
         }
     }
 });
