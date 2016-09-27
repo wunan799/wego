@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>跳转</title>
+    <title>授权跳转</title>
 </head>
 <body>
 <script type="text/javascript">
