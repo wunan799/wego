@@ -25,7 +25,7 @@ var SignupModel = Class.extend({
     },
 
     signupMatch: function () {
-        var url = global.api_url + 'match/signup.do?matchId='
+        var url = global.api_url + 'match/signin.do?matchId='
             + this.matchId + '&userId=' + this.user.userid;
 
         $.ajax({

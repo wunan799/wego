@@ -55,4 +55,14 @@ public class JedisRepo {
 
         return objectList;
     }
+
+    public void remove(String id, Object object) {
+        jedis.connect();
+        jedis.lrem(id.getBytes(), 1, SerializeHelper.objectToByte(object));
+    }
+
+    public void del(String id) {
+        jedis.connect();
+        jedis.del(id.getBytes());
+    }
 }

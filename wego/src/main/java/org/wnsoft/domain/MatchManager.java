@@ -3,6 +3,8 @@
  */
 package org.wnsoft.domain;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wnsoft.repository.JedisRepo;
 import org.wnsoft.utils.SerializeHelper;
 import org.wnsoft.utils.WnException;
@@ -12,6 +14,7 @@ import java.util.List;
 
 public class MatchManager {
     private static final String MATCH_MANAGER = "Match-Manager";
+    private static Logger logger = LoggerFactory.getLogger(MatchManager.class);
     private List<Match> matchList = new ArrayList<>();
     private JedisRepo jedisRepo = new JedisRepo();
 
@@ -19,7 +22,12 @@ public class MatchManager {
         List<String> idList = jedisRepo.loadList(MATCH_MANAGER);
 
         for (String matchId : idList) {
-            matchList.add(jedisRepo.load(matchId));
+            try {
+                matchList.add(jedisRepo.load(matchId));
+            } catch (WnException e) {
+                logger.warn("Load match exception: {}", e.toString());
+                jedisRepo.remove(MATCH_MANAGER, matchId);
+            }
         }
     }
 
@@ -28,6 +36,19 @@ public class MatchManager {
             matchList.add(match);
             jedisRepo.save(match.getMatchId(), match);
             jedisRepo.append(MATCH_MANAGER, match.getMatchId());
+        }
+    }
+
+    public void delMatch(String matchId) {
+        for (int i = 0; i < matchList.size(); ++i) {
+            Match match = matchList.get(i);
+
+            if (match.getMatchId().equalsIgnoreCase(matchId)) {
+                jedisRepo.remove(MATCH_MANAGER, matchId);
+                jedisRepo.del(matchId);
+                matchList.remove(i);
+                break;
+            }
         }
     }
 

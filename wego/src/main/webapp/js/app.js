@@ -31,7 +31,7 @@ requirejs.config({
 });
 
 // Start the main app logic.
-requirejs(['lib/jsi'], function () {
+requirejs(['lib/jsi.min'], function () {
     requirejs(['controller', 'model', 'view', 'config/global'], function (controller) {
         controller.setup();
     });

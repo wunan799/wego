@@ -1,25 +1,33 @@
-body{
+body {
     background-color: #efeff4;
 }
-.weui_label{
+
+html, body{
+    height: 100%;
+}
+
+.weui_label {
     width: 5em;
 }
-.weui_select{
+
+.weui_select {
     padding-left: 0;
 }
 
-.cover{
+.cover {
     display: block;
     width: 42px;
     height: 42px;
     margin-right: 15px;
 }
-.title{
+
+.title {
     font-weight: 400;
     margin-right: 15px;
     font-size: 16px;
 }
-.summary{
+
+.summary {
     font-size: 14px;
     margin-right: 15px;
     color: #888888;
@@ -29,4 +37,15 @@ body{
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.weui_tab_bd_item {
+    display: none;
+}
+
+.weui_tab_bd_item.h3 {
+    padding: 45% 0 0;
+    text-align: center;
+    color: #888;
+    font-weight: normal;
 }

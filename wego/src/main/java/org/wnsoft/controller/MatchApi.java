@@ -53,6 +53,14 @@ public class MatchApi {
         return new WnResult(match.getMatchId());
     }
 
+
+    @RequestMapping(value = "/match/del.do", method = RequestMethod.GET)
+    @ResponseBody
+    public WnResult delMatch(String matchId) {
+        matchService.delMatch(matchId);
+        return WnResult.SUCCESS;
+    }
+
     @RequestMapping(value = "/match/publish.do", method = RequestMethod.POST)
     @ResponseBody
     public WnResult publishMatch(@RequestBody PubMatchDto pubMatchDto) {
@@ -61,13 +69,6 @@ public class MatchApi {
                 , pubMatchDto.getAgentId());
         return WnResult.SUCCESS;
     }
-
-//    @RequestMapping(value = "/user/get.do", method = RequestMethod.GET)
-//    @ResponseBody
-//    public WnResult getOauthUser(S) {
-//        User user = matchService.getOauthUser();
-//        return new WnResult(user);
-//    }
 
     @RequestMapping(value = "/match/list.do", method = RequestMethod.GET)
     @ResponseBody
@@ -136,10 +137,17 @@ public class MatchApi {
         return new WnResult(matchDto);
     }
 
-    @RequestMapping(value = "/match/signup.do", method = RequestMethod.GET)
+    @RequestMapping(value = "/match/signin.do", method = RequestMethod.GET)
     @ResponseBody
-    public WnResult signupMatch(String matchId, String userId) {
-        matchService.signupMatch(matchId, userId);
+    public WnResult signinMatch(String matchId, String userId) {
+        matchService.signinMatch(matchId, userId);
+        return WnResult.SUCCESS;
+    }
+
+    @RequestMapping(value = "/match/signout.do", method = RequestMethod.GET)
+    @ResponseBody
+    public WnResult signoutMatch(String matchId, String userId) {
+        matchService.signoutMatch(matchId, userId);
         return WnResult.SUCCESS;
     }
 

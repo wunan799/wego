@@ -43,6 +43,10 @@ public class MatchService {
         matchManager.addMatch(match);
     }
 
+    public void delMatch(String matchId) {
+        matchManager.delMatch(matchId);
+    }
+
     public void publishMatch(String matchId, List<String> toUserList
             , List<String> toPartyList, int agentId) {
         Match match = matchManager.getMatchById(matchId);
@@ -129,10 +133,16 @@ public class MatchService {
         return matchManager.getMatchById(matchId);
     }
 
-    public void signupMatch(String matchId, String userId) {
+    public void signinMatch(String matchId, String userId) {
         Match match = matchManager.getMatchById(matchId);
         match.addPlayer(userManager.getUserById(userId
                 , tokenManager.getToken()));
+        matchManager.saveMatch(match);
+    }
+
+    public void signoutMatch(String matchId, String userId) {
+        Match match = matchManager.getMatchById(matchId);
+        match.delPlayer(userId);
         matchManager.saveMatch(match);
     }
 
