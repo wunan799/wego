@@ -100,12 +100,20 @@ var Global = Class.extend({
             return;
         }
 
-        $.weui.loading('获取授权');
         var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?' +
             'appid=wx3acffe302f7bce92&redirect_uri=' +
             'http%3a%2f%2fwego.au-syd.mybluemix.net%2fapi%2fuser%2fcallback.do' +
             '&response_type=code&scope=snsapi_base&state=' +
             btoa(window.location.pathname + window.location.search) + '#wechat_redirect';
+        var ua = navigator.userAgent.toLowerCase();
+        var isAndroid = ua.indexOf('android') != -1;
+
+        if (isAndroid) {
+            window.location.href = url;
+            return;
+        }
+
+        $.weui.loading('获取授权');
         var iframe = document.createElement('iframe');
         iframe.id = 'iframe1';
         iframe.name = 'iframe1';
