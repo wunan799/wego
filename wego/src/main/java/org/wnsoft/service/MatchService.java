@@ -151,7 +151,18 @@ public class MatchService {
         return match.getPlayerList();
     }
 
-    public List<Department> getDepartment(int id) {
-        return departmentManager.getDepartmentList(tokenManager.getToken(), id);
+    public Department getDepartment(int id) {
+        return departmentManager.getDepartment(tokenManager.getToken(), id);
+    }
+
+    public List<User> getDepartUsers(int id) {
+        List<User> userList = departmentManager.getDepartmentUsers(
+                tokenManager.getToken(), id);
+
+        for (User user : userList) {
+            userManager.cacheUser(user);
+        }
+
+        return userList;
     }
 }

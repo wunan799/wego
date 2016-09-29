@@ -17,5 +17,14 @@ var SignupView = Class.extend({
         $('#opponent').val(match.opponent);
         $('#remark').val(match.content);
         $('#shirt').val(match.shirtColor);
+        this.changeState(match.signed);
+    },
+
+    changeState: function (signed) {
+        if (signed) {
+            $('#submit').html('取消报名')
+        } else {
+            $('#submit').html('报名')
+        }
     }
 });

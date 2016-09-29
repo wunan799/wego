@@ -22,7 +22,12 @@ var SignupController = Class.extend({
     },
 
     submit: function () {
-        this.signupModel.signupMatch();
+        this.signupModel.signupMatch(function (result) {
+            if (result) {
+                signupController.signupView.changeState(
+                    signupController.signupModel.match.signed);
+            }
+        });
     }
 });
 

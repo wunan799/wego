@@ -24,7 +24,6 @@ public class UserManager {
 
     public User getOauthUser(String code, String token) {
         User user = doGetUser(doGetUserId(code, token), token);
-        userMap.put(user.getUserid(), user);
         return user;
     }
 
@@ -35,7 +34,9 @@ public class UserManager {
             return user;
         }
 
-        return doGetUser(userId, token);
+        user = doGetUser(userId, token);
+        userMap.put(user.getUserid(), user);
+        return user;
     }
 
     protected String doGetUserId(String code, String token) {
@@ -83,5 +84,9 @@ public class UserManager {
         } catch (IOException e) {
             throw new WnException(WnException.ERROR_IO, e);
         }
+    }
+
+    public void cacheUser(User user) {
+        userMap.put(user.getUserid(), user);
     }
 }

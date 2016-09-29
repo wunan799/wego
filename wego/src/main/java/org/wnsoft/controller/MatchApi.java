@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.wnsoft.domain.Match;
 import org.wnsoft.dto.MatchDto;
+import org.wnsoft.dto.PlayerDto;
 import org.wnsoft.dto.PubMatchDto;
 import org.wnsoft.entity.User;
 import org.wnsoft.service.MatchService;
@@ -134,6 +135,14 @@ public class MatchApi {
         matchDto.setOppScore(match.getOppScore());
         matchDto.setCreatorId(match.getCreatorId());
         matchDto.setShirtColor(match.getShirtColor());
+        List<User> playerList = match.getPlayerList();
+        List<String> playerIds = new ArrayList<>(playerList.size());
+        matchDto.setPlayerList(playerIds);
+
+        for (User user : playerList) {
+            playerIds.add(user.getUserid());
+        }
+
         return new WnResult(matchDto);
     }
 
@@ -154,12 +163,66 @@ public class MatchApi {
     @RequestMapping(value = "/match/players.do", method = RequestMethod.GET)
     @ResponseBody
     public WnResult getMatchPlayers(String matchId) {
-        return new WnResult(matchService.getMatchPlayers(matchId));
+        List<User> userList = matchService.getMatchPlayers(matchId);
+        List<PlayerDto> playerDtos = new ArrayList<>(userList.size());
+
+        for (User user : userList) {
+            PlayerDto playerDto = new PlayerDto();
+            playerDto.setUserid(user.getUserid());
+            playerDto.setName(user.getName());
+            playerDto.setMobile(user.getMobile());
+            playerDto.setEmail(user.getEmail());
+            playerDto.setGender(user.getGender());
+            playerDto.setPosition(user.getPosition());
+            playerDto.setWeixinid(user.getWeixinid());
+            playerDto.setAvatar(user.getAvatar());
+            playerDto.setStatus(1);
+            playerDtos.add(playerDto);
+        }
+
+        return new WnResult(playerDtos);
+    }
+
+    @RequestMapping(value = "/match/team/players.do", method = RequestMethod.GET)
+    @ResponseBody
+    public WnResult getTeamMatchPlayers(String matchId, int teamId) {
+        Match match = matchService.getMatch(matchId);
+        List<User> userList = matchService.getDepartUsers(teamId);
+        List<PlayerDto> playerDtos = new ArrayList<>(userList.size());
+
+        for (User user : userList) {
+            PlayerDto playerDto = new PlayerDto();
+            playerDto.setUserid(user.getUserid());
+            playerDto.setName(user.getName());
+            playerDto.setMobile(user.getMobile());
+            playerDto.setEmail(user.getEmail());
+            playerDto.setGender(user.getGender());
+            playerDto.setPosition(user.getPosition());
+            playerDto.setWeixinid(user.getWeixinid());
+            playerDto.setAvatar(user.getAvatar());
+
+            if (match.hasPlayer(user.getUserid())) {
+                playerDto.setStatus(1);
+            } else
+            {
+                playerDto.setStatus(0);
+            }
+
+            playerDtos.add(playerDto);
+        }
+
+        return new WnResult(playerDtos);
     }
 
     @RequestMapping(value = "/department/get.do", method = RequestMethod.GET)
     @ResponseBody
     public WnResult getDepartment(int id) {
         return new WnResult(matchService.getDepartment(id));
+    }
+
+    @RequestMapping(value = "/department/user/get.do", method = RequestMethod.GET)
+    @ResponseBody
+    public WnResult getDepartmentUsers(int id) {
+        return new WnResult(matchService.getDepartUsers(id));
     }
 }

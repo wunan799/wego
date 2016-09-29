@@ -6,6 +6,7 @@ package org.wnsoft.repository;
 import org.wnsoft.utils.SerializeHelper;
 import org.wnsoft.utils.WnException;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -29,23 +30,23 @@ public class JedisRepo {
     }
 
     public void save(String id, Object object) {
-        jedis.connect();
+        checkConnect();
         jedis.set(id.getBytes(), SerializeHelper.objectToByte(object));
     }
 
     public void append(String id, Object object) {
-        jedis.connect();
+        checkConnect();
         jedis.rpush(id.getBytes(), SerializeHelper.objectToByte(object));
     }
 
     public <T> T load(String id) {
-        jedis.connect();
+        checkConnect();
         byte[] bytes = jedis.get(id.getBytes());
         return SerializeHelper.byteToObject(bytes);
     }
 
     public <T> List<T> loadList(String id) {
-        jedis.connect();
+        checkConnect();
         List<byte[]> byteList = jedis.lrange(id.getBytes(), 0, -1);
         List<T> objectList = new ArrayList<T>(byteList.size());
 
@@ -57,12 +58,29 @@ public class JedisRepo {
     }
 
     public void remove(String id, Object object) {
-        jedis.connect();
+        checkConnect();
         jedis.lrem(id.getBytes(), 1, SerializeHelper.objectToByte(object));
     }
 
     public void del(String id) {
-        jedis.connect();
+        checkConnect();
         jedis.del(id.getBytes());
+    }
+
+    private void checkConnect() {
+        try {
+            doCheckConnect();
+        } catch (JedisConnectionException e) {
+            jedis.ping();
+        }
+    }
+
+    private void doCheckConnect() {
+        try {
+            jedis.ping();
+        } catch (JedisConnectionException e) {
+            jedis.disconnect();
+            throw (e);
+        }
     }
 }

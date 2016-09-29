@@ -4,6 +4,7 @@
 package org.wnsoft.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class MatchDto implements Serializable {
     private String matchId;
@@ -18,6 +19,7 @@ public class MatchDto implements Serializable {
     private int oppScore;         //对手分数
     private String creatorId;
     private String shirtColor;
+    private List<String> playerList;
 
     public String getMatchId() {
         return matchId;
@@ -113,5 +115,13 @@ public class MatchDto implements Serializable {
 
     public void setShirtColor(String shirtColor) {
         this.shirtColor = shirtColor;
+    }
+
+    public List<String> getPlayerList() {
+        return playerList;
+    }
+
+    public void setPlayerList(List<String> playerList) {
+        this.playerList = playerList;
     }
 }
